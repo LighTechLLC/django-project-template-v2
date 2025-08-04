@@ -13,6 +13,7 @@ pillow = "==10.4.0"
 psycopg2 = {version = "==2.9.9", markers = "sys_platform == 'linux' or sys_platform == 'win'"}
 psycopg2-binary = {version = "==2.9.9", markers = "sys_platform == 'darwin'"}
 django-oauth-toolkit = "==3.0.1"
+django-ninja = "==1.4.3"
 
 [dev-packages]
 redis = "==5.0.8"

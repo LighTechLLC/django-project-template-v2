@@ -49,5 +49,6 @@ settings_include(
     "logging.py",
     "tests.py",
     "sentry.py",
+    "oauth2.py",
     optional("local_settings.py"),
 )
