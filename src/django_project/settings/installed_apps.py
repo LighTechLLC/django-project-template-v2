@@ -6,9 +6,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd party apps
-    "rest_framework",
     "oauth2_provider",
-    "drf_yasg",
     # project apps
     "apps.users",
 ]
