@@ -1,5 +1,5 @@
-import os
 import importlib
+import os
 import pkgutil
 from pathlib import Path
 
@@ -23,18 +23,22 @@ def discover_celery_tasks():
     """
     try:
         # Import the celery_tasks package
-        celery_tasks_package = importlib.import_module('services.celery_tasks')
-        
+        celery_tasks_package = importlib.import_module("services.celery_tasks")
+
         # Get the package path
         package_path = Path(celery_tasks_package.__file__).parent
-        
+
         # Discover all Python modules in the package
-        for _, module_name, is_pkg in pkgutil.iter_modules([str(package_path)]):
-            if not is_pkg and module_name != '__init__':
+        for _, module_name, is_pkg in pkgutil.iter_modules(
+            [str(package_path)]
+        ):
+            if not is_pkg and module_name != "__init__":
                 # Import each module to register tasks
-                importlib.import_module(f'services.celery_tasks.{module_name}')
-                print(f"✓ Discovered tasks from: services.celery_tasks.{module_name}")
-                
+                importlib.import_module(f"services.celery_tasks.{module_name}")
+                print(
+                    f"✓ Discovered tasks from: services.celery_tasks.{module_name}"
+                )
+
     except ImportError as e:
         print(f"Warning: Could not import services.celery_tasks package: {e}")
     except Exception as e:
