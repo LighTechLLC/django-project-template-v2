@@ -18,7 +18,8 @@ app.autodiscover_tasks()
 
 def discover_celery_tasks():
     """
-    Custom function to discover and import all task modules from services.celery_tasks
+    Custom function to discover and import all task modules
+    from services.celery_tasks
     This replaces the autodiscover_tasks approach for custom folder structures.
     """
     try:
@@ -36,7 +37,8 @@ def discover_celery_tasks():
                 # Import each module to register tasks
                 importlib.import_module(f"services.celery_tasks.{module_name}")
                 print(
-                    f"✓ Discovered tasks from: services.celery_tasks.{module_name}"
+                    "✓ Discovered tasks from: "
+                    f"services.celery_tasks.{module_name}"
                 )
 
     except ImportError as e:

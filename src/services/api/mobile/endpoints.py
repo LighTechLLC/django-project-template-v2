@@ -1,7 +1,5 @@
 from ninja import Router
 
-from services.api.auth import AuthBearer
-
 # Create mobile API router
 router = Router()
 

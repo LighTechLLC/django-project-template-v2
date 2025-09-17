@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from ninja import NinjaAPI
 from ninja.errors import ValidationError
 
@@ -10,6 +11,7 @@ api = NinjaAPI(
     description="API with OAuth2 authentication",
     version="1.0",
     csrf=False,
+    docs_decorator=staff_member_required,
     auth=AuthBearer(),
 )
 

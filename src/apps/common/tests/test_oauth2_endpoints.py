@@ -2,8 +2,6 @@ import base64
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from django.urls import reverse
-from ninja.testing import TestClient
 from oauth2_provider.models import Application
 
 User = get_user_model()
