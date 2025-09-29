@@ -1,0 +1,9 @@
+{% extends "emails/base.txt" %}
+
+{% block content %}
+Hello, {{ user_name }}! We are glad to have you with us.
+
+Your account has been successfully created, and you can use all the features of the platform.
+
+Go to the site: {{ site_url }}
+{% endblock %}

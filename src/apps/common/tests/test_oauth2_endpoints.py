@@ -1,13 +1,19 @@
 import base64
 
 from django.contrib.auth import get_user_model
+from django.http.response import HttpResponse
 from django.test import TestCase
+from django.urls import reverse_lazy
 from oauth2_provider.models import Application
 
 User = get_user_model()
 
 
 class OAuth2EndpointsTestCase(TestCase):
+    TOKEN_URL = reverse_lazy("token")
+    REVOKETOKEN_URL = reverse_lazy("revoke-token")
+    INTROSPECT_URL = reverse_lazy("introspect")
+
     def setUp(self):
         # Create a test user
         self.user = User.objects.create_user(
@@ -46,7 +52,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act
         response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=request_data,
             headers={"Authorization": auth_header},
         )
@@ -73,7 +79,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act
         response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=request_data,
             headers={"Authorization": auth_header},
         )
@@ -95,10 +101,10 @@ class OAuth2EndpointsTestCase(TestCase):
         }
 
         # Act
-        response = self.client.post("/api/auth/token", data=request_data)
+        response = self.client.post(self.TOKEN_URL, data=request_data)
 
         # Assert
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
         data = response.json()
         self.assertEqual(data["error"], "invalid_client")
 
@@ -113,7 +119,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act
         response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=request_data,
             headers={"Authorization": auth_header},
         )
@@ -136,7 +142,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Get initial token
         token_response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=initial_token_data,
             headers={"Authorization": auth_header},
         )
@@ -155,7 +161,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Use refresh token to get new access token
         response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=refresh_data,
             headers={"Authorization": auth_header},
         )
@@ -181,7 +187,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Get initial token
         token_response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=token_request_data,
             headers={"Authorization": auth_header},
         )
@@ -194,16 +200,17 @@ class OAuth2EndpointsTestCase(TestCase):
         revoke_data = {"token": token}
 
         # Act - Revoke the token
-        response = self.client.post(
-            "/api/auth/revoke",
+        response: HttpResponse = self.client.post(
+            self.REVOKETOKEN_URL,
             data=revoke_data,
             headers={"Authorization": auth_header},
         )
 
         # Assert revocation was successful
         self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertIn("message", data)
+        self.assertIn("text/html", response.headers["Content-Type"])
+        response_text = response.content.decode("utf-8")
+        self.assertEqual(response_text, "")
 
     def test_revoke_refresh_token(self):
         """Test refresh token revocation"""
@@ -218,7 +225,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Get initial token
         token_response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=initial_token_data,
             headers={"Authorization": auth_header},
         )
@@ -235,7 +242,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Revoke the refresh token
         response = self.client.post(
-            "/api/auth/revoke",
+            self.REVOKETOKEN_URL,
             data=revoke_data,
             headers={"Authorization": auth_header},
         )
@@ -251,7 +258,7 @@ class OAuth2EndpointsTestCase(TestCase):
 
         # Act - Try to use the revoked refresh token
         refresh_response = self.client.post(
-            "/api/auth/token",
+            self.TOKEN_URL,
             data=refresh_attempt_data,
             headers={"Authorization": auth_header},
         )

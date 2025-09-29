@@ -1,0 +1,7 @@
+{{ project_name }}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+Best regards, team {{ project_name }}.
+{{ site_url }}

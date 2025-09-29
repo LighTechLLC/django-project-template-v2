@@ -5,6 +5,8 @@ allowed_hosts = ["*"]
 script_name = ''
 csrf_trusted_origins = []
 environment = "local"
+site_url = "http://exmaple.com"
+project_name = "Example Proj"
 
 [celery]
 broker_url = "redis://localhost:6379/2"

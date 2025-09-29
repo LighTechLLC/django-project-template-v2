@@ -52,3 +52,7 @@ if FORCE_SCRIPT_NAME:
     SESSION_COOKIE_PATH = f"{FORCE_SCRIPT_NAME}/"
 
 SILENCED_SYSTEM_CHECKS = ["auth.E003"]
+
+# Project-specific settings
+SITE_URL = config["base"]["site_url"]
+PROJECT_NAME = config["base"]["project_name"]

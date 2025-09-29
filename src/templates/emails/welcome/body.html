@@ -1,0 +1,15 @@
+{% extends "emails/base.html" %}
+
+{% block content %}
+<h1>Welcome to {{ project_name }}!</h1>
+
+<p>Hello, <strong>{{ user_name }}</strong>!</p>
+
+<p>We are glad to have you with us.</p>
+
+<p>Your account has been successfully created, and you can use all the features of the platform.</p>
+
+<p>
+  <a href="http://{{ site_url }}" class="btn">Go to the site</a>
+</p>
+{% endblock %}
