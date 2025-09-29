@@ -8,6 +8,8 @@ router = Router()
 
 @router.get("me", response=UserResponse)
 def get_me(request) -> UserResponse:
+    user, _ = request.auth
+
     serice = MeService()
-    result = serice.execute(request)
+    result = serice.execute(user)
     return result

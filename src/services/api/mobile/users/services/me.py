@@ -1,7 +1,6 @@
-from services.api.mobile.users.shemas import UserResponse
+from apps.users.models import User
 
 
 class MeService:
-    def execute(self, request):
-        user = request.user
-        return UserResponse.model_validate(user)
+    def execute(self, user: User):
+        return user
